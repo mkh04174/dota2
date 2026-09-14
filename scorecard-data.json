@@ -3,7 +3,7 @@
   "format": "BO3",
   "team1Name": "NS Club",
   "team1Logo": "https://messages-prod.27c852f3500f38c1e7786e2c9ff9e48f.r2.cloudflarestorage.com/019f7610-9adc-7e5d-b326-22520d28e687/1789386706188-image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=b33de61d4f22a31b59b25364ab5037c5%2F20260914%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260914T130515Z&X-Amz-Expires=3600&X-Amz-Signature=effa515972ecb2f415f52b3cc92d341d752fd8b9772196c9294d6b6219db2e44&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
-  "team1Score": "1",
+  "team1Score": "0",
   "team2Name": "Stariy Bog Club",
   "team2Logo": "https://messages-prod.27c852f3500f38c1e7786e2c9ff9e48f.r2.cloudflarestorage.com/019f7610-9adc-7e5d-b326-22520d28e687/1789386707374-image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=b33de61d4f22a31b59b25364ab5037c5%2F20260914%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260914T130515Z&X-Amz-Expires=3600&X-Amz-Signature=e2496761fa43d36fbf6c3282e570c520ac33f1ff3023d3b6879612ba7635475f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
   "team2Score": "1",
