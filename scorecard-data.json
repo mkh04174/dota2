@@ -3,7 +3,7 @@
   "format": "BO3",
   "team1Name": "Rostik999 Club",
   "team1Logo": "https://messages-prod.27c852f3500f38c1e7786e2c9ff9e48f.r2.cloudflarestorage.com/019f7610-9adc-7e5d-b326-22520d28e687/1789392416034-image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=b33de61d4f22a31b59b25364ab5037c5%2F20260914%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260914T160029Z&X-Amz-Expires=3600&X-Amz-Signature=c7733a6208b3503ec47f57c235af1b6feabb3f759945d1fd6a9812acfe29393f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
-  "team1Score": "0",
+  "team1Score": "1",
   "team2Name": "Cooman Club",
   "team2Logo": "https://messages-prod.27c852f3500f38c1e7786e2c9ff9e48f.r2.cloudflarestorage.com/019f7610-9adc-7e5d-b326-22520d28e687/1789392417062-image.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=b33de61d4f22a31b59b25364ab5037c5%2F20260914%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20260914T160029Z&X-Amz-Expires=3600&X-Amz-Signature=0a8cb772a1a44e1be84494119dfef22cbe106ec745375a0ac07ec160d202d3d8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
   "team2Score": "0",
