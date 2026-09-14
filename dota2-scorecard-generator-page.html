@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dota 2 Scorecard Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #00d9ff;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #fff;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .label-hint {
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: normal;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #00d9ff;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #00d9ff;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .section-title {
+            color: #00d9ff;
+            font-size: 18px;
+            margin: 30px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 217, 255, 0.3);
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #00d9ff 0%, #0099cc 100%);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+        }
+
+        .instructions {
+            background: rgba(0, 217, 255, 0.1);
+            border-left: 4px solid #00d9ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .instructions h3 {
+            color: #00d9ff;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .instructions ol {
+            color: rgba(255, 255, 255, 0.8);
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        .instructions code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #00ff88;
+            font-family: 'Courier New', monospace;
+        }
+
+        .success-box {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .success-box.show {
+            display: block;
+        }
+
+        .success-box h3 {
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+
+        .success-box p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .error-box {
+            background: rgba(255, 68, 68, 0.1);
+            border: 2px solid #ff4444;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .error-box.show {
+            display: block;
+        }
+
+        .error-box h3 {
+            color: #ff4444;
+            margin-bottom: 10px;
+        }
+
+        .error-box p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .github-settings {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .github-settings h3 {
+            color: #ffa500;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-connected {
+            background: #00ff88;
+            box-shadow: 0 0 10px #00ff88;
+        }
+
+        .status-disconnected {
+            background: #ff4444;
+            box-shadow: 0 0 10px #ff4444;
+        }
+
+        .status-text {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Dota 2 Scorecard Generator</h1>
+        <p class="subtitle">Update scorecard data directly to GitHub</p>
+
+        <div class="card">
+            <!-- GitHub Settings -->
+            <div class="github-settings">
+                <h3>⚙️ GitHub Settings</h3>
+                <div class="form-group">
+                    <label>GitHub Username</label>
+                    <input type="text" id="githubUsername" placeholder="e.g., mkh04174" value="mkh04174">
+                </div>
+                <div class="form-group">
+                    <label>Repository Name</label>
+                    <input type="text" id="githubRepo" placeholder="e.g., dota2" value="dota2">
+                </div>
+                <div class="form-group">
+                    <label>GitHub Personal Access Token <span class="label-hint">(Classic token with repo scope)</span></label>
+                    <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxx">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                    <span class="status-indicator status-disconnected" id="statusIndicator"></span>
+                    <span class="status-text" id="statusText">Not connected</span>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="testConnection()" style="margin-top: 10px;">
+                    🔗 Test Connection
+                </button>
+            </div>
+
+            <form id="scorecardForm">
+                <!-- Tournament Info -->
+                <div class="section-title">📊 Tournament Info</div>
+                
+                <div class="form-group">
+                    <label>Tournament Name</label>
+                    <input type="text" id="tournamentName" placeholder="e.g., The International 2026" value="The International 2026">
+                </div>
+
+                <div class="form-group">
+                    <label>Match Format</label>
+                    <select id="matchFormat">
+                        <option value="BO1">BO1 - Best of 1</option>
+                        <option value="BO3" selected>BO3 - Best of 3</option>
+                        <option value="BO5">BO5 - Best of 5</option>
+                    </select>
+                </div>
+
+                <!-- Team 1 -->
+                <div class="section-title">🔵 Team 1</div>
+                
+                <div class="form-group">
+                    <label>Team Name</label>
+                    <input type="text" id="team1Name" placeholder="Enter team name" value="Team Spirit">
+                </div>
+
+                <div class="form-group">
+                    <label>Team Logo URL</label>
+                    <input type="text" id="team1Logo" placeholder="Paste logo URL here" value="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/71970650-7002-5ede-8b4d-5ad5f7ea1a84/c7c301e6-fde2-5f81-aa42-1c3a30c8e606.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label>Score</label>
+                    <input type="number" id="team1Score" placeholder="0" value="2" min="0" max="5">
+                </div>
+
+                <!-- Team 2 -->
+                <div class="section-title">🔴 Team 2</div>
+                
+                <div class="form-group">
+                    <label>Team Name</label>
+                    <input type="text" id="team2Name" placeholder="Enter team name" value="PSG.LGD">
+                </div>
+
+                <div class="form-group">
+                    <label>Team Logo URL</label>
+                    <input type="text" id="team2Logo" placeholder="Paste logo URL here" value="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/71970650-7002-5ede-8b4d-5ad5f7ea1a84/c7c301e6-fde2-5f81-aa42-1c3a30c8e606.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label>Score</label>
+                    <input type="number" id="team2Score" placeholder="0" value="1" min="0" max="5">
+                </div>
+
+                <!-- Up Next -->
+                <div class="section-title">⏭️ Up Next Match</div>
+                
+                <div class="row">
+                    <div class="form-group">
+                        <label>Team 1 Logo URL</label>
+                        <input type="text" id="nextTeam1Logo" placeholder="Paste logo URL" value="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/71970650-7002-5ede-8b4d-5ad5f7ea1a84/c7c301e6-fde2-5f81-aa42-1c3a30c8e606.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label>Team 2 Logo URL</label>
+                        <input type="text" id="nextTeam2Logo" placeholder="Paste logo URL" value="https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/71970650-7002-5ede-8b4d-5ad5f7ea1a84/c7c301e6-fde2-5f81-aa42-1c3a30c8e606.jpg">
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-success" onclick="updateGitHub()">
+                    🚀 Update Scorecard on GitHub
+                </button>
+            </form>
+
+            <div class="success-box" id="successBox">
+                <h3>✅ Success!</h3>
+                <p>Scorecard updated on GitHub! Refresh OBS Browser source (Ctrl+R)</p>
+            </div>
+
+            <div class="error-box" id="errorBox">
+                <h3>❌ Error!</h3>
+                <p id="errorMessage">Something went wrong</p>
+            </div>
+
+            <!-- Instructions -->
+            <div class="instructions">
+                <h3>📖 How to Get GitHub Token:</h3>
+                <ol>
+                    <li>Go to <a href="https://github.com/settings/tokens" target="_blank" style="color: #00d9ff;">GitHub Token Settings</a></li>
+                    <li>Click <strong>"Generate new token (classic)"</strong></li>
+                    <li>Give it a name (e.g., "Scorecard")</li>
+                    <li>Select scope: <strong>repo</strong> (full control of private repositories)</li>
+                    <li>Click <strong>"Generate token"</strong></li>
+                    <li>Copy the token (starts with <code>ghp_</code>)</li>
+                    <li>Paste it in the "GitHub Personal Access Token" field above</li>
+                </ol>
+                <p style="margin-top: 15px; color: rgba(255,255,255,0.7);">
+                    <strong>💡 Note:</strong> Your token is stored locally in your browser and never sent to any server except GitHub API.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load saved settings from localStorage
+        window.onload = function() {
+            const savedUsername = localStorage.getItem('githubUsername');
+            const savedRepo = localStorage.getItem('githubRepo');
+            const savedToken = localStorage.getItem('githubToken');
+
+            if (savedUsername) document.getElementById('githubUsername').value = savedUsername;
+            if (savedRepo) document.getElementById('githubRepo').value = savedRepo;
+            if (savedToken) {
+                document.getElementById('githubToken').value = savedToken;
+                updateStatus(true);
+            }
+        };
+
+        function updateStatus(connected) {
+            const indicator = document.getElementById('statusIndicator');
+            const text = document.getElementById('statusText');
+            
+            if (connected) {
+                indicator.className = 'status-indicator status-connected';
+                text.textContent = 'Connected to GitHub';
+            } else {
+                indicator.className = 'status-indicator status-disconnected';
+                text.textContent = 'Not connected';
+            }
+        }
+
+        function testConnection() {
+            const username = document.getElementById('githubUsername').value;
+            const repo = document.getElementById('githubRepo').value;
+            const token = document.getElementById('githubToken').value;
+
+            if (!username || !repo || !token) {
+                alert('Please enter GitHub Username, Repository, and Token');
+                return;
+            }
+
+            // Test by fetching user info
+            fetch(`https://api.github.com/user`, {
+                headers: {
+                    'Authorization': `token ${token}`
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Invalid token');
+                }
+            })
+            .then(userData => {
+                // Verify username matches
+                if (userData.login.toLowerCase() === username.toLowerCase()) {
+                    updateStatus(true);
+                    // Save to localStorage
+                    localStorage.setItem('githubUsername', username);
+                    localStorage.setItem('githubRepo', repo);
+                    localStorage.setItem('githubToken', token);
+                    alert('✅ Connected to GitHub successfully!\n\nLogged in as: ' + userData.login);
+                } else {
+                    updateStatus(false);
+                    alert('❌ Username does not match token!\n\nToken belongs to: ' + userData.login + '\nEntered username: ' + username);
+                }
+            })
+            .catch(error => {
+                updateStatus(false);
+                alert('❌ Connection failed: ' + error.message);
+            });
+        }
+
+        function updateGitHub() {
+            const username = document.getElementById('githubUsername').value;
+            const repo = document.getElementById('githubRepo').value;
+            const token = document.getElementById('githubToken').value;
+
+            if (!username || !repo || !token) {
+                alert('Please fill in all GitHub settings (Username, Repository, and Token)');
+                return;
+            }
+
+            const data = {
+                tournament: document.getElementById('tournamentName').value,
+                format: document.getElementById('matchFormat').value,
+                team1Name: document.getElementById('team1Name').value,
+                team1Logo: document.getElementById('team1Logo').value,
+                team1Score: document.getElementById('team1Score').value,
+                team2Name: document.getElementById('team2Name').value,
+                team2Logo: document.getElementById('team2Logo').value,
+                team2Score: document.getElementById('team2Score').value,
+                next1: document.getElementById('nextTeam1Logo').value,
+                next2: document.getElementById('nextTeam2Logo').value
+            };
+
+            const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+
+            // First, get the current file SHA
+            fetch(`https://api.github.com/repos/${username}/${repo}/contents/scorecard-data.json`, {
+                headers: {
+                    'Authorization': `token ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Repository or file not found. Make sure scorecard-data.json exists in your repository.');
+                }
+                return response.json();
+            })
+            .then(fileData => {
+                const sha = fileData.sha;
+
+                // Update the file
+                return fetch(`https://api.github.com/repos/${username}/${repo}/contents/scorecard-data.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`
+                    },
+                    body: JSON.stringify({
+                        message: 'Update scorecard data',
+                        content: content,
+                        sha: sha
+                    })
+                });
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Save settings
+                    localStorage.setItem('githubUsername', username);
+                    localStorage.setItem('githubRepo', repo);
+                    localStorage.setItem('githubToken', token);
+                    updateStatus(true);
+
+                    document.getElementById('successBox').classList.add('show');
+                    document.getElementById('errorBox').classList.remove('show');
+                    setTimeout(() => {
+                        document.getElementById('successBox').classList.remove('show');
+                    }, 5000);
+                } else {
+                    throw new Error('Failed to update file');
+                }
+            })
+            .catch(error => {
+                document.getElementById('errorMessage').textContent = error.message;
+                document.getElementById('errorBox').classList.add('show');
+                document.getElementById('successBox').classList.remove('show');
+            });
+        }
+    </script>
+</body>
+</html>
