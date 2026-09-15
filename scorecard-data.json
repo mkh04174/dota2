@@ -1,12 +1,12 @@
 {
-  "tournament": "EPL World Series: Southeast Asia",
+  "tournament": "Winline Star Series Season 4",
   "format": "BO3",
-  "team1Name": "Yangon Galacticos",
-  "team1Logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbB3tAt1fTigqXuOiwGgKvtxts_drysGXQoGicBUv57g&s=10",
-  "team1Score": "2",
-  "team2Name": "YACHE123",
-  "team2Logo": "https://i.imgur.com/zQPzKFs.png",
-  "team2Score": "1",
-  "next1": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJgNSZQL_-9qI66l6vJP34W_EQJA7VAj7yblaQTEvQbQ&s=10",
-  "next2": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJgNSZQL_-9qI66l6vJP34W_EQJA7VAj7yblaQTEvQbQ&s=10"
+  "team1Name": "Stray Club",
+  "team1Logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiC1-9qs3-02hMLL79KNfrKXdHSuUBHDNgf_9cB6pt8g&s",
+  "team1Score": "0",
+  "team2Name": "Cooman Club",
+  "team2Logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStm97h3tC1PRylLu6DHNQu_MAcCBFkJTAv-R3pp2IESw&s=10",
+  "team2Score": "0",
+  "next1": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxUtq5KKSRr5_TuG73AroLH2fkXoQYKiR2koRa10T3bw&s=10",
+  "next2": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRulUjerl71Bwdy9Ma7B59QxkCG1I50dv-9NmyXGtCCOw&s=10"
 }
