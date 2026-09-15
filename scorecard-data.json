@@ -1,12 +1,12 @@
 {
-  "tournament": "Winline Star Series Season 4",
+  "tournament": "EPL World Series: Southeast Asia",
   "format": "BO3",
-  "team1Name": "RostikFaceKid Club",
-  "team1Logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcvXR3Vq4Y0bZqhZ8a1VsMB-potZ47Uv6YJqDlFIbOsg&s=10",
-  "team1Score": "1",
-  "team2Name": "Stray Club",
-  "team2Logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO6sgadTTktUcnF7bUl8OgLMCDvvyHGJ2elgLcQCc-wQ&s=10",
+  "team1Name": "Team Kinetix",
+  "team1Logo": "https://drive.google.com/file/d/1mxgN9O2hXsm4fh-EteHC4EVxp0ePRlJc/view?usp=sharing",
+  "team1Score": "0",
+  "team2Name": "YACHE123",
+  "team2Logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJgNSZQL_-9qI66l6vJP34W_EQJA7VAj7yblaQTEvQbQ&s=10",
   "team2Score": "0",
-  "next1": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJgNSZQL_-9qI66l6vJP34W_EQJA7VAj7yblaQTEvQbQ&s=10",
-  "next2": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJgNSZQL_-9qI66l6vJP34W_EQJA7VAj7yblaQTEvQbQ&s=10"
+  "next1": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8nP8xSOX0rUVf9uq3l7k0t5pmDvTunquHiCIBg45MdA&s=10",
+  "next2": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2xFxMAqttZ9U2V8mMHfHJi3Pof6OxSvNuUxl4pyLLwg&s=10"
 }
