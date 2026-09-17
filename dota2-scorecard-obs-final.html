@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dota 2 Scorecard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        .slide-container {
+            width: 1920px;
+            height: 1080px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Moving Background */
+        .background {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/a0c0fa86-860d-5540-8a94-47cfd21f0f66/56bdbf83-d64d-51b5-aa71-35e87621991d.jpg') center/cover;
+            opacity: 0.3;
+            animation: moveBackground 30s ease-in-out infinite alternate;
+            z-index: 1;
+        }
+
+        @keyframes moveBackground {
+            0% {
+                transform: translate(-10%, -10%) scale(1);
+            }
+            50% {
+                transform: translate(-5%, -15%) scale(1.1);
+            }
+            100% {
+                transform: translate(-15%, -5%) scale(1.05);
+            }
+        }
+
+        /* Overlay for better text readability */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.7) 100%);
+            z-index: 2;
+        }
+
+        /* Main Content */
+        .content {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding-top: 180px;
+        }
+
+        /* Tournament Name */
+        .tournament-name {
+            font-size: 72px;
+            font-weight: bold;
+            color: #00d9ff;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5),
+                         0 0 40px rgba(0, 217, 255, 0.3);
+        }
+
+        /* Match Format - Closer to score */
+        .match-format {
+            font-size: 32px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 6px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        /* Score Line */
+        .score-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+            margin-bottom: 15px;
+        }
+
+        .team {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Team Logo - RGB border glow */
+        .team-logo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .team-logo::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                #ff0000 0deg,
+                #ff8800 60deg,
+                #00ff88 120deg,
+                #00d9ff 180deg,
+                #8800ff 240deg,
+                #ff0066 300deg,
+                #ff0000 360deg
+            );
+            z-index: -1;
+            animation: rotateRGB 6s linear infinite;
+        }
+
+        .team-logo::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            right: 3px;
+            bottom: 3px;
+            border-radius: 50%;
+            background: #0a0a0a;
+            z-index: -1;
+        }
+
+        @keyframes rotateRGB {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .team-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+        }
+
+        .team-name {
+            font-size: 38px;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+            min-width: 280px;
+            text-align: center;
+        }
+
+        .score {
+            font-size: 110px;
+            font-weight: bold;
+            color: #ff4444;
+            text-shadow: 0 0 30px rgba(255, 68, 68, 0.6),
+                         0 0 60px rgba(255, 68, 68, 0.4);
+            min-width: 130px;
+            text-align: center;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .vs {
+            font-size: 70px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0 30px;
+        }
+
+        /* Up Next - RGB border like team logos */
+        .up-next {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            font-size: 32px;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 50px;
+        }
+
+        .up-next-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            background: transparent;
+            position: relative;
+        }
+
+        .up-next-logo::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                #ff0000 0deg,
+                #ff8800 60deg,
+                #00ff88 120deg,
+                #00d9ff 180deg,
+                #8800ff 240deg,
+                #ff0066 300deg,
+                #ff0000 360deg
+            );
+            z-index: -1;
+            animation: rotateRGB 6s linear infinite;
+        }
+
+        .up-next-logo::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            right: 3px;
+            bottom: 3px;
+            border-radius: 50%;
+            background: #0a0a0a;
+            z-index: -1;
+        }
+
+        .up-next-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+        }
+
+        .up-next-text {
+            font-size: 28px;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .up-next-vs {
+            font-size: 24px;
+            color: rgba(0, 217, 255, 0.6);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Scorecard Display -->
+    <div class="slide-container">
+        <div class="background"></div>
+        <div class="overlay"></div>
+        <div class="content">
+            <div class="tournament-name" id="displayTournament">Loading...</div>
+            <div class="match-format" id="displayFormat">---</div>
+            <div class="score-line">
+                <div class="team">
+                    <div class="team-logo">
+                        <img id="displayTeam1Logo" src="" alt="Team 1">
+                    </div>
+                    <div class="team-name" id="displayTeam1Name">---</div>
+                </div>
+                <div class="score" id="displayTeam1Score">0</div>
+                <div class="vs">:</div>
+                <div class="score" id="displayTeam2Score">0</div>
+                <div class="team">
+                    <div class="team-logo">
+                        <img id="displayTeam2Logo" src="" alt="Team 2">
+                    </div>
+                    <div class="team-name" id="displayTeam2Name">---</div>
+                </div>
+            </div>
+            <div class="up-next">
+                <span class="up-next-text">Up Next:</span>
+                <div class="up-next-logo">
+                    <img id="displayNext1" src="" alt="Next 1">
+                </div>
+                <span class="up-next-vs">vs</span>
+                <div class="up-next-logo">
+                    <img id="displayNext2" src="" alt="Next 2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Default values
+        const defaults = {
+            tournamentName: 'The International 2026',
+            matchFormat: 'BO3',
+            team1Name: 'Team Spirit',
+            team1Logo: 'https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/71970650-7002-5ede-8b4d-5ad5f7ea1a84/c7c301e6-fde2-5f81-aa42-1c3a30c8e606.jpg',
+            team1Score: '2',
+            team2Name: 'PSG.LGD',
+            team2Logo: 'https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/71970650-7002-5ede-8b4d-5ad5f7ea1a84/c7c301e6-fde2-5f81-aa42-1c3a30c8e606.jpg',
+            team2Score: '1',
+            nextTeam1Logo: 'https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/71970650-7002-5ede-8b4d-5ad5f7ea1a84/c7c301e6-fde2-5f81-aa42-1c3a30c8e606.jpg',
+            nextTeam2Logo: 'https://d2u1z1lopyfwlx.cloudfront.net/thumbnails/71970650-7002-5ede-8b4d-5ad5f7ea1a84/c7c301e6-fde2-5f81-aa42-1c3a30c8e606.jpg'
+        };
+
+        function loadScorecard() {
+            fetch('scorecard-data.json?' + new Date().getTime())
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('displayTournament').textContent = data.tournament || defaults.tournamentName;
+                    document.getElementById('displayFormat').textContent = data.format || defaults.matchFormat;
+                    document.getElementById('displayTeam1Name').textContent = data.team1Name || defaults.team1Name;
+                    document.getElementById('displayTeam1Logo').src = data.team1Logo || defaults.team1Logo;
+                    document.getElementById('displayTeam1Score').textContent = data.team1Score || defaults.team1Score;
+                    document.getElementById('displayTeam2Name').textContent = data.team2Name || defaults.team2Name;
+                    document.getElementById('displayTeam2Logo').src = data.team2Logo || defaults.team2Logo;
+                    document.getElementById('displayTeam2Score').textContent = data.team2Score || defaults.team2Score;
+                    document.getElementById('displayNext1').src = data.next1 || defaults.nextTeam1Logo;
+                    document.getElementById('displayNext2').src = data.next2 || defaults.nextTeam2Logo;
+                })
+                .catch(error => {
+                    console.error('Error loading scorecard data:', error);
+                    // Load defaults if JSON not found
+                    document.getElementById('displayTournament').textContent = defaults.tournamentName;
+                    document.getElementById('displayFormat').textContent = defaults.matchFormat;
+                    document.getElementById('displayTeam1Name').textContent = defaults.team1Name;
+                    document.getElementById('displayTeam1Logo').src = defaults.team1Logo;
+                    document.getElementById('displayTeam1Score').textContent = defaults.team1Score;
+                    document.getElementById('displayTeam2Name').textContent = defaults.team2Name;
+                    document.getElementById('displayTeam2Logo').src = defaults.team2Logo;
+                    document.getElementById('displayTeam2Score').textContent = defaults.team2Score;
+                    document.getElementById('displayNext1').src = defaults.nextTeam1Logo;
+                    document.getElementById('displayNext2').src = defaults.nextTeam2Logo;
+                });
+        }
+
+        // Load on page load
+        window.onload = loadScorecard;
+    </script>
+</body>
+</html>
