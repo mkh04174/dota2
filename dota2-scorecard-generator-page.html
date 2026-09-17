@@ -392,6 +392,10 @@
         .edit-team-form.show {
             display: block;
         }
+
+        .btn-save-teams {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
     </style>
 </head>
 <body>
@@ -532,6 +536,9 @@
                 <div class="team-list" id="teamList">
                     <!-- Teams will be loaded here -->
                 </div>
+                <button type="button" class="btn btn-save-teams" onclick="saveTeamsToGitHub()">
+                    💾 Save Teams to GitHub
+                </button>
             </div>
 
             <div class="success-box" id="successBox">
@@ -580,18 +587,46 @@
                 updateStatus(true);
             }
 
-            // Load teams data
+            // Load teams from GitHub
+            await loadTeamsFromGitHub();
+            
+            sortTeamsAlphabetically();
+            populateTeamSelectors();
+            renderTeamList();
+        };
+
+        async function loadTeamsFromGitHub() {
+            const username = document.getElementById('githubUsername').value;
+            const repo = document.getElementById('githubRepo').value;
+            const token = document.getElementById('githubToken').value;
+
+            if (!username || !repo || !token) {
+                console.log('GitHub credentials not set, using empty teams list');
+                teamsData = { teams: [] };
+                return;
+            }
+
             try {
-                const response = await fetch('teams-data.json');
-                teamsData = await response.json();
-                sortTeamsAlphabetically();
-                populateTeamSelectors();
-                renderTeamList();
+                const response = await fetch(`https://api.github.com/repos/${username}/${repo}/contents/teams-data.json`, {
+                    headers: {
+                        'Authorization': `token ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const fileData = await response.json();
+                    const content = atob(fileData.content);
+                    teamsData = JSON.parse(content);
+                    console.log('Loaded teams from GitHub');
+                } else {
+                    console.log('teams-data.json not found on GitHub, starting with empty list');
+                    teamsData = { teams: [] };
+                }
             } catch (error) {
-                console.error('Error loading teams data:', error);
+                console.error('Error loading teams from GitHub:', error);
                 teamsData = { teams: [] };
             }
-        };
+        }
 
         function sortTeamsAlphabetically() {
             teamsData.teams.sort((a, b) => a.name.localeCompare(b.name));
@@ -753,7 +788,7 @@
             nameInput.value = '';
             logoInput.value = '';
 
-            alert('Team added successfully! ✅');
+            alert('Team added! Now click "Save Teams to GitHub" to save permanently. ✅');
         }
 
         function toggleEditTeam(index) {
@@ -779,7 +814,7 @@
             populateTeamSelectors();
             renderTeamList();
 
-            alert('Team updated successfully! ✅');
+            alert('Team updated! Now click "Save Teams to GitHub" to save permanently. ✅');
         }
 
         function deleteTeam(index) {
@@ -788,7 +823,63 @@
                 sortTeamsAlphabetically();
                 populateTeamSelectors();
                 renderTeamList();
-                alert('Team deleted successfully! ✅');
+                alert('Team deleted! Now click "Save Teams to GitHub" to save permanently. ✅');
+            }
+        }
+
+        async function saveTeamsToGitHub() {
+            const username = document.getElementById('githubUsername').value;
+            const repo = document.getElementById('githubRepo').value;
+            const token = document.getElementById('githubToken').value;
+
+            if (!username || !repo || !token) {
+                alert('Please fill in all GitHub settings (Username, Repository, and Token)');
+                return;
+            }
+
+            const content = btoa(unescape(encodeURIComponent(JSON.stringify(teamsData, null, 2))));
+
+            try {
+                // First, get the current file SHA (if it exists)
+                let sha = null;
+                const getFileResponse = await fetch(`https://api.github.com/repos/${username}/${repo}/contents/teams-data.json`, {
+                    headers: {
+                        'Authorization': `token ${token}`
+                    }
+                });
+
+                if (getFileResponse.ok) {
+                    const fileData = await getFileResponse.json();
+                    sha = fileData.sha;
+                }
+
+                // Update or create the file
+                const updateResponse = await fetch(`https://api.github.com/repos/${username}/${repo}/contents/teams-data.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`
+                    },
+                    body: JSON.stringify({
+                        message: 'Update teams data',
+                        content: content,
+                        sha: sha || undefined
+                    })
+                });
+
+                if (updateResponse.ok) {
+                    document.getElementById('successBox').innerHTML = '<h3>✅ Success!</h3><p>Teams saved to GitHub! Now accessible from any device.</p>';
+                    document.getElementById('successBox').classList.add('show');
+                    document.getElementById('errorBox').classList.remove('show');
+                    setTimeout(() => {
+                        document.getElementById('successBox').classList.remove('show');
+                    }, 5000);
+                } else {
+                    throw new Error('Failed to save teams');
+                }
+            } catch (error) {
+                document.getElementById('errorMessage').textContent = error.message;
+                document.getElementById('errorBox').classList.add('show');
+                document.getElementById('successBox').classList.remove('show');
             }
         }
 
@@ -903,6 +994,7 @@
                     localStorage.setItem('githubToken', token);
                     updateStatus(true);
 
+                    document.getElementById('successBox').innerHTML = '<h3>✅ Success!</h3><p>Scorecard updated on GitHub! Refresh OBS Browser source (Ctrl+R)</p>';
                     document.getElementById('successBox').classList.add('show');
                     document.getElementById('errorBox').classList.remove('show');
                     setTimeout(() => {
