@@ -3,10 +3,10 @@
   "format": "BO3",
   "team1Name": "Balu Team",
   "team1Logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhimvWwJ8tVdpA6wr3Q0DSd4i0O0dXinossQ58qRMkOg&s=10",
-  "team1Score": "2",
+  "team1Score": "0",
   "team2Name": "PuckChamp",
   "team2Logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShsplmyjxVXNNo1jOWtw6_xFDIQ1YboZOcR8lb8Gg7aw&s=10",
-  "team2Score": "1",
+  "team2Score": "0",
   "next1": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShsplmyjxVXNNo1jOWtw6_xFDIQ1YboZOcR8lb8Gg7aw&s=10",
   "next2": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhimvWwJ8tVdpA6wr3Q0DSd4i0O0dXinossQ58qRMkOg&s=10"
 }
